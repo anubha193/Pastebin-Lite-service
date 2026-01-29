@@ -2,6 +2,7 @@ import express from "express"
 import { nanoid } from "nanoid"
 import redis from "../ db/redis.js"
 import { getNowMs } from "../utils/time.js"
+import { getBaseUrl } from "../utils/baseUrl.js";
 
 const router = express.Router()
 
@@ -39,7 +40,7 @@ router.post("/", async (req, res) => {
 
   res.json({
     id,
-    url: `${process.env.BASE_URL}/p/${id}`
+    url: `${getBaseUrl(req)}/p/${id}`
   })
 })
 
