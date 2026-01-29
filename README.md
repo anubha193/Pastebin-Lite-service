@@ -1,41 +1,47 @@
-Pastebin Lite
-How to Run the App Locally
+# Pastebin Lite
 
-Clone the repository:
+## How to Run the App Locally
 
-git clone <repository-url>
-cd pastebin-lite
+### Clone the repository
+```bash
+git clone https://github.com/anubha193/Pastebin-Lite-service
+ cd Pastebin-Lite-service
+```
 
 
 Install dependencies:
-
+```bash
 npm install
+```
 
 
 Create a .env file in the project root with the following variables:
-
+```bash
 PORT=3000
 UPSTASH_REDIS_REST_URL=https://<your-upstash-endpoint>.upstash.io
 UPSTASH_REDIS_REST_TOKEN=<your-upstash-token>
 BASE_URL=http://localhost:3000
 TEST_MODE=0
+```
 
 
 Start the application:
-
+```bash
 npm run dev
-
+```
 
 The application will be available at:
 
+```bash
 http://localhost:3000
+```
 
-Persistence Layer
+## Persistence Layer
 
 The application uses Upstash Redis as a persistent key-value store.
 This ensures paste data survives server restarts and works correctly across serverless deployments.
 
-Design Decisions
+## Design Decisions
 
 View counts are incremented only on successful API fetches (GET /api/pastes/:id) as required by the specification.
 
