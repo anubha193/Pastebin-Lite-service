@@ -6,9 +6,7 @@ import { getNowMs } from "../utils/time.js"
 const router = express.Router()
 
 router.get("/:id", async (req, res) => {
-  console.log(req.params.id)
   const raw = await redis.get(`paste:${req.params.id}`)
-  console.log(raw);
   if (!raw) return res.sendStatus(404)
    
   const paste = raw;
