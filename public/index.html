@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pastebin Lite</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; }
+    textarea { width: 100%; height: 200px; }
+    input, button { padding: 8px; margin-top: 8px; }
+    .error { color: red; margin-top: 10px; }
+    .success { margin-top: 15px; }
+  </style>
+</head>
+<body>
+
+  <h1>Pastebin Lite</h1>
+
+  <label>Paste content *</label>
+  <textarea id="content"></textarea>
+
+  <label>TTL (seconds, optional)</label><br />
+  <input type="number" id="ttl" min="1" />
+
+  <br />
+
+  <label>Max views (optional)</label><br />
+  <input type="number" id="views" min="1" />
+
+  <br /><br />
+
+  <button onclick="createPaste()">Create Paste</button>
+
+  <div class="error" id="error"></div>
+  <div class="success" id="result"></div>
+
+  <script>
+    async function createPaste() {
+      document.getElementById("error").innerText = ""
+      document.getElementById("result").innerText = ""
+
+      const content = document.getElementById("content").value
+      const ttl = document.getElementById("ttl").value
+      const views = document.getElementById("views").value
+
+      const payload = { content }
+      if (ttl) payload.ttl_seconds = Number(ttl)
+      if (views) payload.max_views = Number(views)
+
+      try {
+        const res = await fetch("/api/pastes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        })
+
+        const data = await res.json()
+
+        if (!res.ok) {
+          document.getElementById("error").innerText = data.error || "Failed"
+          return
+        }
+
+        document.getElementById("result").innerHTML =
+          `Paste created: <a href="${data.url}" target="_blank">${data.url}</a>`
+
+      } catch (err) {
+        document.getElementById("error").innerText = "Network error"
+      }
+    }
+  </script>
+
+</body>
+</html>
